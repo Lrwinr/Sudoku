@@ -19,7 +19,7 @@ using namespace::std;
 				{9,6,1,8,5,7,2,3,4},
 				{4,3,2,1,9,6,7,5,8} };   //测试用 初始化后的数独表
 	string Binary[9] = { "000","001","010","011","100","101","110","111","---" };//将数字转换为1个二进制数
-	struct { char bit[3];bool canErased=false; }Numbers[9][9];//将1个二进制数分3位存储,同时记录这一位能否被擦除
+	struct { char bit[3];bool canErased[3]={false,false,false}; }Numbers[9][9];//将1个二进制数分3位存储,同时记录这一位能否被擦除
 
 
 int ROWCnt[9]={0};//每行、列、宫里非空的数

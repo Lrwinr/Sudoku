@@ -87,10 +87,10 @@ void Input::InsideMove(void){
                         InsideCur=0;//下次进入时，重新定位到第一位数
                         break;
                         case 8://退格键删除输入过的一位
-                        if(Numbers[cursor.y][cursor.x].canErased==true){
+                        if(Numbers[cursor.y][cursor.x].canErased[InsideCur]==true){
                         std::cout<<"\033[92;1m"<<"_";//重新打印空格，并更改存储的信息
                         Numbers[cursor.y][cursor.x].bit[InsideCur]='_';
-                        Numbers[cursor.y][cursor.x].canErased==false;
+                        Numbers[cursor.y][cursor.x].canErased[InsideCur]==false;
                         }
                         break;//退格键删除的操作加入主函数中会更好，但需要访问逻辑坐标cursor.x,y
 
@@ -98,7 +98,7 @@ void Input::InsideMove(void){
                         if(Numbers[cursor.y][cursor.x].bit[InsideCur]=='_'){//如果这个位置是空的可填入
                         std::cout<<"\033[37m"<<"0";
                         Numbers[cursor.y][cursor.x].bit[InsideCur]='0';//并把该位的内容改为0
-                        Numbers[cursor.y][cursor.x].canErased=true;//更改了内容后，就说明这一位可以被擦除了
+                        Numbers[cursor.y][cursor.x].canErased[InsideCur]=true;//更改了内容后，就说明这一位可以被擦除了
                         InsideCur=(InsideCur+1)%3;
                         }
                         break; 
@@ -106,7 +106,7 @@ void Input::InsideMove(void){
                         if(Numbers[cursor.y][cursor.x].bit[InsideCur]=='_'){
                         std::cout<<"\033[37m"<<"1";
                         Numbers[cursor.y][cursor.x].bit[InsideCur]='1';
-                        Numbers[cursor.y][cursor.x].canErased=true;
+                        Numbers[cursor.y][cursor.x].canErased[InsideCur]=true;
                         InsideCur=(InsideCur+1)%3;
                         }
                         break;
@@ -118,7 +118,7 @@ void Input::InsideMove(void){
 //此时无输入，所以逻辑坐标是静止的
         if(!Logic()) {//如果不正确                
           for(int k=0;k<3;++k){//进行一次重新打印，产生红色的错误提醒
-             if(Numbers[cursor.y][cursor.x].canErased=true)
+             if(Numbers[cursor.y][cursor.x].canErased[k]==true)
                 std::cout<<"\033[91;1m"<<Numbers[cursor.y][cursor.x].bit[k];//把该位标为红色
              else
                 std::cout<<"\033[92;1m"<<Numbers[cursor.y][cursor.x].bit[k];//正常打印该位为绿色              
