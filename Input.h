@@ -21,7 +21,7 @@ public:
 	void right(void);
 
 	void showcursor(void);//输出光标位置
-        void showcursor(int& _y,int& _x);
+        void showcursor(const int& _y,const int& _x);
 
         void InsideMove(void);//内部输入模式
      

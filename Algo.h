@@ -9,7 +9,9 @@ class Algo
 private:
 int ROWCnt[9]={0};//每行、列、宫里非空的数
 int COLCnt[9]={0};
-int PALCnt[9]={0},PALnum;
+int PALCnt[9]={0};
+int PALnum;
+int WinCnt=0;
 
         int PalaceNum(int& _row,int& _col);
 

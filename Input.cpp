@@ -62,11 +62,11 @@ void Input::showcursor(void){//将光标逻辑位置转换为实际位置并移�
 }
 
 
-void Input::showcursor(int& _y,int& _x){//重载了这个函数
+void Input::showcursor(const int& _y,const int& _x){//重载了这个函数,辅助功能专用
         int _row,_col;
 	_row=_y*2+2;
 	switch(_x){
-		case 0:_col=2;break;
+		case 0:_col=1;break;
 		case 1:_col=7;break;
 		case 2:_col=12;break;
 		case 3:_col=16;break;
@@ -76,6 +76,8 @@ void Input::showcursor(int& _y,int& _x){//重载了这个函数
 		case 7:_col=35;break;
 		case 8:_col=40;break;
 		case 9:_col=44;break;
+		case 10:_col=48;break;
+		case 11:_col=52;break;
 	}
 	//公式由棋盘的格式确定
 	printf("\033[%d;%dH",_row,_col);
