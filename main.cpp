@@ -1,30 +1,55 @@
+#include "Init.cpp"
 #include "Scene.cpp"
 #include "Input.cpp"
 #include "Algo.cpp"
 
-
-
 int main(){
 
-Init table;
+cout<<"\033c";//清屏
+
+char c;//存储输入的指令
+int  level=0;//存储输入的难度
+		
 Scene scene;
 Algo exam;
-
-Input* pinput=new Input;//创建对象指针
-
+Input* pinput=new Input;
+bool ExitFlag=false;
+bool EnterFlag=false;
+Init initTable;
 scene.GameBegin();
-sleep (5);//等待输入游戏开始信号，可以调用read函数
-	char c;//存储输入的指令
+c=read();
+scene.Select();
 
-        scene.Print(table);//待设置游戏开始和退出控制
-	pinput->showcursor();//需先显示光标，才能初始化row和col的值，否则会有bug
+	while(!EnterFlag){
+        c=read();
+        switch(c){
+        case'S':case's':++level;
+                        break;
+        case 32:EnterFlag=true;
+                break;
+        default:continue;
+        }
+        level=level%4;
+        cout<<"\033[0;90m0";
+        printf("\033[%d;%dH",level+12,24);
+        cout<<"\033[1;92m-";
+        printf("\033[%d;%dH",level+12,24);
+        }
 
-             
+	switch(level){
+	case 0: level=20 ;break;
+	case 1: level=40 ;break;
+	case 2: level=50 ;break;
+	case 3: level=60 ;break;
+	}
+        initTable.Proc(level);
+        scene.Print();
+	pinput->showcursor();
 
-	for(int i=0;i<200;++i){//测试用，只接收前50个指令，之后程序会结束
-		c=read();//
-		switch(c){
-			//W,A,S,D控制光标上下左右			
+
+	while(!ExitFlag){
+		c=read();
+		switch(c){		
 			case'W':case'w':
 			pinput->up();
 			pinput->showcursor();
@@ -44,14 +69,15 @@ sleep (5);//等待输入游戏开始信号，可以调用read函数
 
                         case 32://空格键进入输入模式
                         pinput->InsideMove();
-                        if(exam.Logic(pinput))
-                        exam.Check(pinput,scene);
-                        else
+                        if(!exam.Logic(pinput))
                         pinput->Wrong();
+                        exam.Check(pinput,scene);
                         continue;
-
-			
-                }
+			case 27://ESC键退出游戏
+			cout<<"\033c";//清屏
+			ExitFlag=true;
+			default:continue;
+               }
 
         }
 			

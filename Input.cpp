@@ -62,11 +62,11 @@ void Input::showcursor(void){//将光标逻辑位置转换为实际位置并移�
 }
 
 
-void Input::showcursor(int& _y,int& _x){//重载了这个函数
+void Input::showcursor(const int& _y,const int& _x){//重载了这个函数,辅助功能专用
         int _row,_col;
 	_row=_y*2+2;
 	switch(_x){
-		case 0:_col=2;break;
+		case 0:_col=1;break;
 		case 1:_col=7;break;
 		case 2:_col=12;break;
 		case 3:_col=16;break;
@@ -76,6 +76,8 @@ void Input::showcursor(int& _y,int& _x){//重载了这个函数
 		case 7:_col=35;break;
 		case 8:_col=40;break;
 		case 9:_col=44;break;
+		case 10:_col=48;break;
+		case 11:_col=52;break;
 	}
 	//公式由棋盘的格式确定
 	printf("\033[%d;%dH",_row,_col);
@@ -101,17 +103,17 @@ void Input::InsideMove(void){
                         InputIdx=!InputIdx;
                         InsideCur=0;//下次进入时，重新定位到第一位数
                         break;
-                        case 8://退格键删除输入过的一位
-                        if(Numbers[cursor.y][cursor.x].canErased[InsideCur]==true){
+                        case 'l'://退格键删除输入过的一位
+                        if(Numbers[cursor.y][cursor.x].canErased[InsideCur]){
                         std::cout<<"\033[92;1m"<<"_";//重新打印空格，并更改存储的信息
                         Numbers[cursor.y][cursor.x].bit[InsideCur]='_';
-                        Numbers[cursor.y][cursor.x].canErased[InsideCur]==false;
+                        Numbers[cursor.y][cursor.x].canErased[InsideCur]=false;
                         }
                         break;//退格键删除的操作加入主函数中会更好，但需要访问逻辑坐标cursor.x,y
 
                         case'J':case'j'://J键选中当前位置，并填0
                         if(Numbers[cursor.y][cursor.x].bit[InsideCur]=='_'){//如果这个位置是空的可填入
-                        std::cout<<"\033[37m"<<"0";
+                        std::cout<<"\033[37;1m"<<"0";
                         Numbers[cursor.y][cursor.x].bit[InsideCur]='0';//并把该位的内容改为0
                         Numbers[cursor.y][cursor.x].canErased[InsideCur]=true;//更改了内容后，就说明这一位可以被擦除了
                         InsideCur=(InsideCur+1)%3;
@@ -119,7 +121,7 @@ void Input::InsideMove(void){
                         break; 
 			case'K':case'k'://K键选中当前位置，并填1
                         if(Numbers[cursor.y][cursor.x].bit[InsideCur]=='_'){
-                        std::cout<<"\033[37m"<<"1";
+                        std::cout<<"\033[37;1m"<<"1";
                         Numbers[cursor.y][cursor.x].bit[InsideCur]='1';
                         Numbers[cursor.y][cursor.x].canErased[InsideCur]=true;
                         InsideCur=(InsideCur+1)%3;
