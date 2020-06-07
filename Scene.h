@@ -1,7 +1,9 @@
+#ifndef _SCENE_H_
+#define _SCENE_H_
 #include <iostream>
 #include <string>
 #include <unistd.h>
-#include "Init.h"
+#include "Input.h"
 using namespace::std;
 
 
@@ -39,12 +41,12 @@ int Draw();
 
 
 public:
-int Print(Init& table);
-//以下为补充内容
-
+int Print();
 void GameBegin();
-void GameWin();
+void Select();
+void GameWin(int& IDX);
 
 
 };
+#endif
 

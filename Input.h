@@ -1,11 +1,8 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
-
+#include "Init.h"
 
 char read(void);//输入函数
-
-class Algo;
-
 //输入判断类
 class Input
 {
