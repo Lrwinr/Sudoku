@@ -5,7 +5,7 @@ int COLCnt[9]={0};
 int PALCnt[9]={0};
 int PalaceNum(int& _row,int& _col);
 
-struct { char bit[3];bool canErased[3]={false,false,false}; }Numbers[9][9];
+struct { char bit[3];bool canErased[3]={false,false,false};bool Wrong=false; }Numbers[9][9];
 
 
 Init::Init(void){

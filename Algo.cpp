@@ -3,23 +3,24 @@
 
 bool Algo::Logic(Input* & input){
                    
-  int FilledIdx=3;
+  bool FilledIdx;
   bool WrongFlag=false;
   int Cnt=0;//记录相同的位数
   int i,j,k;
 
   PALnum=PalaceNum(input->cursor.y,input->cursor.x);
 
-  int Comp=ROWCnt[input->cursor.y];
-  ROWCnt[input->cursor.y]=0;//此处有略复杂的逻辑问题
+  ROWCnt[input->cursor.y]=0;
+  COLCnt[input->cursor.x]=0;
+  PALCnt[PALnum]=0;
  
 
   for(j=0;j<9;++j){//对行进行遍历
-     FilledIdx=3;
+     FilledIdx=true;
      Cnt=0;
      for(k=0;k<3;++k){//对于一个数，比较每三位
-        if(Numbers[input->cursor.y][j].bit[k]=='_')
-        --FilledIdx;
+        if(Numbers[input->cursor.y][j].bit[k]=='_'||Numbers[input->cursor.y][j].Wrong==true)
+        FilledIdx=false;
         if(Numbers[input->cursor.y][input->cursor.x].bit[k]=='_')//如果这个数有一位是空的
         break;//那就不比较并计入重复
         else if(input->cursor.x==j)//遍历到这个数本身，则不进行比较.否则会记为重复
@@ -27,7 +28,7 @@ bool Algo::Logic(Input* & input){
         else if(Numbers[input->cursor.y][input->cursor.x].bit[k]==Numbers[input->cursor.y][j].bit[k])
         ++Cnt;//记录下和另一个数相同的位数
      }
-     if(FilledIdx==3)
+     if(FilledIdx)
      ++ROWCnt[input->cursor.y];
      if(Cnt==3)
      WrongFlag=true;//有相同的数则失败.
@@ -35,8 +36,11 @@ bool Algo::Logic(Input* & input){
 
 
   for(i=0;i<9;++i){//对列进行遍历
+     FilledIdx=true;
      Cnt=0;
      for(k=0;k<3;++k){
+        if(Numbers[i][input->cursor.x].bit[k]=='_'||Numbers[i][input->cursor.x].Wrong==true)
+        FilledIdx=false;
         if(Numbers[input->cursor.y][input->cursor.x].bit[k]=='_')
         break;
         else if(input->cursor.y==i)
@@ -44,6 +48,8 @@ bool Algo::Logic(Input* & input){
         else if(Numbers[input->cursor.y][input->cursor.x].bit[k]==Numbers[i][input->cursor.x].bit[k])
         ++Cnt;
      }
+     if(FilledIdx)
+     ++COLCnt[input->cursor.x];
      if(Cnt==3)
      WrongFlag=true;
 
@@ -59,15 +65,20 @@ bool Algo::Logic(Input* & input){
 
   for(i=0;i<3;++i){
      for(j=0;j<3;++j){
+        FilledIdx=true;
         Cnt=0;
         for(k=0;k<3;++k){
+           if(Numbers[tempy+i][tempx+j].bit[k]=='_'||Numbers[tempy+i][tempx+j].Wrong==true)
+           FilledIdx=false;
            if(Numbers[input->cursor.y][input->cursor.x].bit[k]=='_')
            break;
-           else if(tempy==tempy+i&&tempx==tempx+j)
+           else if(input->cursor.y==tempy+i&&input->cursor.x==tempx+j)
            break;  
-           else if(Numbers[tempy+i][tempx+j].bit[k]==Numbers[tempy][tempx].bit[k])
+           else if(Numbers[input->cursor.y][input->cursor.x].bit[k]==Numbers[tempy+i][tempx+j].bit[k])
            ++Cnt;
         }
+        if(FilledIdx)
+        ++PALCnt[PALnum];
         if(Cnt==3)
         WrongFlag=true;
      }
@@ -75,17 +86,11 @@ bool Algo::Logic(Input* & input){
 
 
 
- if(ROWCnt[input->cursor.y]<Comp){//当重新统计这一行的个数时，若比原先值小1
-                                   //则说明一个原本填满的数被擦除了
+  if(WrongFlag){
+  --ROWCnt[input->cursor.y];
   --COLCnt[input->cursor.x];
-  --PALCnt[PALnum];  
+  --PALCnt[PALnum];
   }
-  else if(ROWCnt[input->cursor.y]>Comp&&!WrongFlag){//若比原先多1，则说明新填满了一个数
-  ROWCnt[input->cursor.y]=Comp+1;
-  ++COLCnt[input->cursor.x];            //那么对应地：
-  ++PALCnt[PALnum]; 
-  } 
-  else ROWCnt[input->cursor.y]=Comp; 
 
   return !WrongFlag;
 
@@ -134,31 +139,36 @@ cout<<effect.PALeffect[tempy][tempx];
 input->showcursor();
 
 int Count=0;
+
+WinCnt=0;
 for(int i=0;i<9;++i){  
-   WinCnt=0;
-   if(ROWCnt[i]>=9)
+   if(ROWCnt[i]==9)
    ++WinCnt;
 }
 if(WinCnt==9)
   ++Count;
 
+
+WinCnt=0;
 for(int i=0;i<9;++i){  
-   WinCnt=0;
-   if(COLCnt[i]>=9)
+   if(COLCnt[i]==9)
    ++WinCnt;
 }
 if(WinCnt==9)
   ++Count;
 
+
+WinCnt=0;
 for(int i=0;i<9;++i){  
-   WinCnt=0;
-   if(PALCnt[i]>=9)
+   if(PALCnt[i]==9)
    ++WinCnt;
 }
 if(WinCnt==9)
   ++Count;
 
 if(Count>0){
+   char SIG;
+   SIG=read();
    effect.GameWin(Count);
    return true;
 }

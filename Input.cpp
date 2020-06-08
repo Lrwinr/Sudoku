@@ -103,13 +103,16 @@ void Input::InsideMove(void){
                         InputIdx=!InputIdx;
                         InsideCur=0;//下次进入时，重新定位到第一位数
                         break;
-                        case 'l'://退格键删除输入过的一位
+                        case 'l'://删除输入
                         if(Numbers[cursor.y][cursor.x].canErased[InsideCur]){
                         std::cout<<"\033[92;1m"<<"_";//重新打印空格，并更改存储的信息
                         Numbers[cursor.y][cursor.x].bit[InsideCur]='_';
                         Numbers[cursor.y][cursor.x].canErased[InsideCur]=false;
                         }
-                        break;//退格键删除的操作加入主函数中会更好，但需要访问逻辑坐标cursor.x,y
+                        else continue;
+                        
+                        Numbers[cursor.y][cursor.x].Wrong=false;
+                        break;
 
                         case'J':case'j':case'0'://J键选中当前位置，并填0
                         if(Numbers[cursor.y][cursor.x].bit[InsideCur]=='_'){//如果这个位置是空的可填入
@@ -144,6 +147,7 @@ void Input::Wrong(void){
              else
                 std::cout<<"\033[92;1m"<<Numbers[cursor.y][cursor.x].bit[k];//正常打印该位为绿色              
           }
+          Numbers[cursor.y][cursor.x].Wrong=true;
           printf("\033[%d;%dH",row,col);
 
 }

@@ -38,9 +38,9 @@ scene.Select();
 
 	switch(level){
 	case 0: level=20 ;break;
-	case 1: level=40 ;break;
-	case 2: level=50 ;break;
-	case 3: level=60 ;break;
+	case 1: level=30 ;break;
+	case 2: level=40 ;break;
+	case 3: level=50 ;break;
 	}
         initTable.Proc(level);
         scene.Print();
@@ -83,6 +83,8 @@ scene.Select();
 			
 
 delete pinput;
+c=read();
+cout<<"\033c";
 
 return 0;
 }
