@@ -23,10 +23,10 @@ bool Algo::Logic(Input* & input){
         FilledIdx=false;
         if(Numbers[input->cursor.y][input->cursor.x].bit[k]=='_')//如果这个数有一位是空的
         break;//那就不比较并计入重复
-        else if(input->cursor.x==j)//遍历到这个数本身，则不进行比较.否则会记为重复
-        break;  
         else if(Numbers[input->cursor.y][input->cursor.x].bit[k]==Numbers[input->cursor.y][j].bit[k])
         ++Cnt;//记录下和另一个数相同的位数
+        if(input->cursor.x==j)//遍历到这个数本身，则不进行比较.否则会记为重复
+        Cnt=0;
      }
      if(FilledIdx)
      ++ROWCnt[input->cursor.y];
@@ -42,11 +42,11 @@ bool Algo::Logic(Input* & input){
         if(Numbers[i][input->cursor.x].bit[k]=='_'||Numbers[i][input->cursor.x].Wrong==true)
         FilledIdx=false;
         if(Numbers[input->cursor.y][input->cursor.x].bit[k]=='_')
-        break;
-        else if(input->cursor.y==i)
         break;  
         else if(Numbers[input->cursor.y][input->cursor.x].bit[k]==Numbers[i][input->cursor.x].bit[k])
         ++Cnt;
+        if(input->cursor.y==i)
+        Cnt=0;  
      }
      if(FilledIdx)
      ++COLCnt[input->cursor.x];
@@ -71,11 +71,11 @@ bool Algo::Logic(Input* & input){
            if(Numbers[tempy+i][tempx+j].bit[k]=='_'||Numbers[tempy+i][tempx+j].Wrong==true)
            FilledIdx=false;
            if(Numbers[input->cursor.y][input->cursor.x].bit[k]=='_')
-           break;
-           else if(input->cursor.y==tempy+i&&input->cursor.x==tempx+j)
-           break;  
+           break; 
            else if(Numbers[input->cursor.y][input->cursor.x].bit[k]==Numbers[tempy+i][tempx+j].bit[k])
            ++Cnt;
+           if(input->cursor.y==tempy+i&&input->cursor.x==tempx+j)
+           Cnt=0;  
         }
         if(FilledIdx)
         ++PALCnt[PALnum];

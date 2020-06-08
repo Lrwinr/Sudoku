@@ -160,6 +160,8 @@ printf("\033[%d;%dH",12,24);
 
 void Scene::GameWin(int& IDX){
 
+printf("\033[1;1H");
+
 for(i=0;i<16;++i){
    for(j=0;j<54;++j){
 
@@ -208,6 +210,7 @@ else
          cout<<Hint[i];
     }
 
+printf("\033[1;1H");
 
 }
 
